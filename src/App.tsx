@@ -7,6 +7,7 @@ function App() {
     <div className="App">
       start project
         <User />
+        <User />
     </div>
   );
 }
