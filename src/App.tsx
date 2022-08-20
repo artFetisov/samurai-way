@@ -1,15 +1,10 @@
 import React from 'react';
-import './App.css';
-import {User} from "./components/user/User";
+import {MyLayout} from "./components/layout/Layout";
 
-function App() {
-  return (
-    <div className="App">
-      start project
-        <User />
-        <User />
-    </div>
-  );
+export const App = () => {
+    return <MyLayout>
+        content
+    </MyLayout>
 }
 
-export default App;
+
