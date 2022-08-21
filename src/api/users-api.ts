@@ -3,7 +3,7 @@ import {instance, ResponseType} from './api'
 
 type GetUsersResponseType = {
     error: null | string
-    items: Array<IUser>
+    items: IUser[]
     totalCount: number
 }
 

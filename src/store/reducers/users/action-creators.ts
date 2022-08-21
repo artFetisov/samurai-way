@@ -1,7 +1,7 @@
 import {userAPI} from "../../../api/users-api";
-import {Dispatch} from "redux";
+import {AnyAction, Dispatch} from "redux";
 import {ResponseType, ResultCodeEnum} from "../../../api/api";
-import {BaseThunkType} from "../../index";
+import {AppStateType, BaseThunkType} from "../../index";
 import {
     FollowAction,
     SetCurrentPageAction,
@@ -13,6 +13,7 @@ import {
     UsersEnumAction
 } from "./types";
 import {IFilter, IUser} from "../../../types/types";
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
 
 export const UsersActionCreators = {
     followSuccess: (userId: number): FollowAction => ({type: UsersEnumAction.FOLLOW, userId}),
@@ -40,7 +41,7 @@ export const UsersActionCreators = {
 
 export const UsersAsyncActionCreators = {
     requestUsers: (currentPage: number, pageSize: number, filter: IFilter): ThunkType =>
-        async (dispatch) => {
+        async (dispatch: Dispatch<UsersActions>) => {
             dispatch(UsersActionCreators.togglePreloader(true))
             dispatch(UsersActionCreators.setCurrentPage(currentPage))
             dispatch(UsersActionCreators.setFilter(filter))
@@ -71,6 +72,5 @@ export const UsersAsyncActionCreators = {
             await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, userAPI.unfollowUser.bind(userAPI), UsersActionCreators.unfollowSuccess)
         }
 }
-
 
 type ThunkType = BaseThunkType<UsersActions>

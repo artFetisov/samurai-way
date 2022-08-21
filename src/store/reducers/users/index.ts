@@ -3,9 +3,9 @@ import {IUserState, UsersActions, UsersEnumAction} from "./types";
 
 let initialState: IUserState = {
     users: [],
-    pageSize: 20,
+    pageSize: 100,
     totalUsersCount: 0,
-    currentPage: 1,
+    currentPage: 20,
     isFetching: false,
     followingInProgress: [],
     filter: {

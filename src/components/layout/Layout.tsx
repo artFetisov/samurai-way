@@ -1,24 +1,24 @@
 import {FC, ReactNode} from "react";
 import {Layout} from 'antd';
-import styles from './Latour.module.scss';
+import styles from './Layout.module.scss';
 import {NavLink} from "react-router-dom";
 
 const {Header, Footer, Sider, Content} = Layout;
 
 export const MyLayout: FC<{ children?: ReactNode }> = ({children}) => {
     return <Layout>
-        <Header className={styles.header}>Header</Header>
+        <header className={styles.header}>Header</header>
         <div className={styles.container}>
-            <Layout className={styles.content}>
-                <Sider className={styles.navbar}>
-                    <NavLink to={'/profile'}>Моя страница</NavLink>
+            <div className={styles.content}>
+                <div className={styles.navbar}>
+                    <NavLink to={'/'}>Моя страница</NavLink>
                     <NavLink to={'/dialogs'}>Мессенджер</NavLink>
                     <NavLink to={'/users'}>Пользователи</NavLink>
-                </Sider>
+                </div>
                 <Content>
                     {children}
                 </Content>
-            </Layout>
+            </div>
         </div>
     </Layout>
 }
