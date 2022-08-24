@@ -1,5 +1,5 @@
 import {IUser} from '../types/types'
-import {instance, ResponseType} from './api'
+import {instance} from "../api/api";
 
 type GetUsersResponseType = {
     error: null | string
@@ -7,7 +7,7 @@ type GetUsersResponseType = {
     totalCount: number
 }
 
-export const userAPI = {
+export const UsersService = {
     getUsers(currentPage: number, pageSize: number, term: string, friend: null | boolean = null) {
         return instance
             .get<GetUsersResponseType>(

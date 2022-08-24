@@ -11,7 +11,7 @@ export const MyLayout: FC<{ children?: ReactNode }> = ({children}) => {
         <div className={styles.container}>
             <div className={styles.content}>
                 <div className={styles.navbar}>
-                    <NavLink to={'/'}>Моя страница</NavLink>
+                    <NavLink to={'/profile/2'}>Моя страница</NavLink>
                     <NavLink to={'/dialogs'}>Мессенджер</NavLink>
                     <NavLink to={'/users'}>Пользователи</NavLink>
                 </div>

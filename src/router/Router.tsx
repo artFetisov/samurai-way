@@ -4,6 +4,6 @@ import {routes} from "./router.data";
 
 export const Router: FC = () => {
     return <Routes>
-        {routes.map(r => <Route path={r.path} element={<r.element/>}/>)}
+        {routes.map(r => <Route key={r.path} path={r.path} element={<r.element/>}/>)}
     </Routes>
 }

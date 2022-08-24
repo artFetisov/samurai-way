@@ -28,6 +28,7 @@ beforeEach(() => {
         totalUsersCount: 19,
         currentPage: 1,
         isFetching: false,
+        portionNumber: 1,
         followingInProgress: [],
         filter: {
             term: '',

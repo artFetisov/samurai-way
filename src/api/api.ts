@@ -3,11 +3,10 @@ import axios from 'axios'
 export const instance = axios.create({
     withCredentials: true,
     headers: {
-        'API-KEY': 'aeb6653d-2f3a-42f9-a0aa-07211832ab73',
+        'API-KEY': '141ae543-407d-4592-b0d4-31dd70ac99d9',
     },
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
 })
-
 export type ResponseType<D = {}, RC = ResultCodeEnum> = {
     data: D
     messages: Array<string>

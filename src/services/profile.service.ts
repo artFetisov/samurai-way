@@ -1,11 +1,11 @@
-import {instance, ResponseType} from './api'
 import {IProfile, IPhotos} from '../types/types'
+import {instance, ResponseType} from "../api/api";
 
 type SavePhotoResponseType = {
     photos: IPhotos
 }
 
-export const profileAPI = {
+export const ProfileService = {
     getUserProfile: (userId: number | null) => {
         return instance.get<IProfile>(`profile/${userId}`).then((response) => response.data)
     },

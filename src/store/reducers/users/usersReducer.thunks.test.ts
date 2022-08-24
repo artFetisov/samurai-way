@@ -1,10 +1,10 @@
-import {userAPI} from '../../../api/users-api'
 import {ResponseType, ResultCodeEnum} from "../../../api/api"
 import {UsersActionCreators, UsersAsyncActionCreators} from "./action-creators";
+import {UsersService} from "../../../services/users.service";
 
 jest.mock('../api/users-api')
 
-const userAPIMock = userAPI as jest.Mocked<typeof userAPI>
+const userAPIMock = UsersService as jest.Mocked<typeof UsersService>
 
 const result: ResponseType = {
     resultCode: ResultCodeEnum.Success,
@@ -12,6 +12,7 @@ const result: ResponseType = {
     data: {}
 }
 
+// @ts-ignore
 userAPIMock.followUser.mockReturnValue(Promise.resolve(result))
 
 test('success follow thunk ', async () => {

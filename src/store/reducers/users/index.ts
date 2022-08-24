@@ -3,9 +3,10 @@ import {IUserState, UsersActions, UsersEnumAction} from "./types";
 
 let initialState: IUserState = {
     users: [],
-    pageSize: 100,
+    pageSize: 10,
+    portionNumber: 1,
     totalUsersCount: 0,
-    currentPage: 20,
+    currentPage: 1,
     isFetching: false,
     followingInProgress: [],
     filter: {
@@ -49,6 +50,11 @@ export default function usersReducer(state = initialState, action: UsersActions)
                 followingInProgress: action.verity
                     ? [...state.followingInProgress, action.userId]
                     : state.followingInProgress.filter((id) => id !== action.userId),
+            }
+
+        case UsersEnumAction.SET_PORTION_NUMBER:
+            return {
+                ...state, portionNumber: action.portionNumber
             }
 
         default:

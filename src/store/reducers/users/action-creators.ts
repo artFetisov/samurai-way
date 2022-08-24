@@ -1,23 +1,29 @@
-import {userAPI} from "../../../api/users-api";
-import {AnyAction, Dispatch} from "redux";
+import {Dispatch} from "redux";
 import {ResponseType, ResultCodeEnum} from "../../../api/api";
-import {AppStateType, BaseThunkType} from "../../index";
+import {BaseThunkType} from "../../index";
 import {
     FollowAction,
     SetCurrentPageAction,
     SetFilterAction,
+    SetPortionNumberAction,
     SetTotalUsersCountAction,
-    SetUsersAction, ToggleInProgressAction,
+    SetUsersAction,
+    ToggleInProgressAction,
     TogglePreloaderAction,
-    UnfollowAction, UsersActions,
+    UnfollowAction,
+    UsersActions,
     UsersEnumAction
 } from "./types";
 import {IFilter, IUser} from "../../../types/types";
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {UsersService} from "../../../services/users.service";
 
 export const UsersActionCreators = {
     followSuccess: (userId: number): FollowAction => ({type: UsersEnumAction.FOLLOW, userId}),
     unfollowSuccess: (userId: number): UnfollowAction => ({type: UsersEnumAction.UNFOLLOW, userId}),
+    setPortionNumber: (portionNumber: number): SetPortionNumberAction => ({
+        type: UsersEnumAction.SET_PORTION_NUMBER,
+        portionNumber
+    }),
     setUsers: (users: IUser[]): SetUsersAction => ({type: UsersEnumAction.SET_USERS, users}),
     setCurrentPage: (currentPage: number): SetCurrentPageAction => ({
         type: UsersEnumAction.SET_CURRENT_PAGE,
@@ -45,7 +51,7 @@ export const UsersAsyncActionCreators = {
             dispatch(UsersActionCreators.togglePreloader(true))
             dispatch(UsersActionCreators.setCurrentPage(currentPage))
             dispatch(UsersActionCreators.setFilter(filter))
-            const response = await userAPI.getUsers(currentPage, pageSize, filter.term, filter.friend)
+            const response = await UsersService.getUsers(currentPage, pageSize, filter.term, filter.friend)
             dispatch(UsersActionCreators.togglePreloader(false))
             dispatch(UsersActionCreators.setUsers(response.items))
             dispatch(UsersActionCreators.setTotalUsersCount(response.totalCount))
@@ -65,11 +71,13 @@ export const UsersAsyncActionCreators = {
     },
     follow: (userId: number): ThunkType =>
         async (dispatch) => {
-            await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, userAPI.followUser.bind(userAPI), UsersActionCreators.followSuccess)
+            // @ts-ignore
+            await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.followUser.bind(UsersService), UsersActionCreators.followSuccess)
         },
     unfollow: (userId: number): ThunkType =>
         async (dispatch) => {
-            await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, userAPI.unfollowUser.bind(userAPI), UsersActionCreators.unfollowSuccess)
+            // @ts-ignore
+            await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.unfollowUser.bind(UsersService), UsersActionCreators.unfollowSuccess)
         }
 }
 

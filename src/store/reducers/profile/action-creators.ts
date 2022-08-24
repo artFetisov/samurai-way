@@ -1,4 +1,3 @@
-import {profileAPI} from "../../../api/profile-api";
 // import {stopSubmit} from "redux-form";
 import {BaseThunkType} from "../../index";
 import {IPhotos, IProfile} from "../../../types/types";
@@ -10,6 +9,8 @@ import {
     SetStatusAction,
     SetUserProfileAction
 } from "./types";
+import {Dispatch} from "redux";
+import {ProfileService} from "../../../services/profile.service";
 
 export const ProfileActionCreators = {
     addPost: (newPostText: string): AddPostAction => ({type: ProfileEnumAction.ADD_POST, newPostText}),
@@ -24,26 +25,26 @@ export const ProfileActionCreators = {
 
 
 export const ProfileAsyncActionCreators = {
-    getUserProfileId: (userId: number | null): ThunkType =>
-        async (dispatch) => {
-            let response = await profileAPI.getUserProfile(userId)
+    getUserProfile: (userId: number | null): ThunkType =>
+        async (dispatch: Dispatch<ProfileActions>) => {
+            let response = await ProfileService.getUserProfile(userId)
             dispatch(ProfileActionCreators.setUserProfile(response))
         },
     getUserStatus: (userId: number): ThunkType =>
         async (dispatch) => {
-            let response = await profileAPI.getStatus(userId)
+            let response = await ProfileService.getStatus(userId)
             dispatch(ProfileActionCreators.setStatus(response))
         },
     updateUserStatus: (status: string): ThunkType =>
         async (dispatch) => {
-            let response = await profileAPI.updateStatus(status)
+            let response = await ProfileService.updateStatus(status)
             if (response.resultCode === 0) {
                 dispatch(ProfileActionCreators.setStatus(status))
             }
         },
     savePhoto: (file: File): ThunkType =>
         async (dispatch) => {
-            let response = await profileAPI.savePhoto(file)
+            let response = await ProfileService.savePhoto(file)
             if (response.resultCode === 0) {
                 dispatch(ProfileActionCreators.savePhotoSuccess(response.data.photos))
             }
@@ -51,16 +52,14 @@ export const ProfileAsyncActionCreators = {
     saveProfile: (profile: IProfile): ThunkType =>
         async (dispatch, getState) => {
             const userId = getState().auth.id
-            const response = await profileAPI.saveProfile(profile)
+            const response = await ProfileService.saveProfile(profile)
             if (response.resultCode === 0) {
-                dispatch(ProfileAsyncActionCreators.getUserProfileId(userId))
+                dispatch(ProfileAsyncActionCreators.getUserProfile(userId))
             } else {
                 // dispatch(stopSubmit('profile', {_error: response.messages[0]}))
                 return Promise.reject(response.messages[0])
             }
         }
-
-
 }
 
 

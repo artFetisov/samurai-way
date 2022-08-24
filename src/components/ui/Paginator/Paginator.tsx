@@ -1,43 +1,62 @@
-import React, { useState } from 'react'
-import styles from './Paginator.module.css'
-import cn from 'classnames'
+import React, {FC, useState} from 'react'
+import styles from './Paginator.module.scss'
+import {Button, Radio} from "antd";
+import {useDispatch} from "react-redux";
+import {UsersActionCreators, UsersAsyncActionCreators} from "../../../store/reducers/users/action-creators";
 
-type PropsType = {
+interface IPaginatorProps {
     totalUsersCount: number
     pageSize: number
     currentPage: number
     onPageChange: (pageNumber: number) => void
     portionSize?: number
+    portionNumber: number
 }
 
-const Paginator: React.FC<PropsType> = ({ totalUsersCount, pageSize, currentPage, onPageChange, portionSize = 10 }) => {
-
-    let pagesCount = Math.ceil(totalUsersCount / pageSize);
-    let pages: Array<number> = [];
+export const Paginator: FC<IPaginatorProps> = ({
+                                                   totalUsersCount,
+                                                   pageSize,
+                                                   currentPage,
+                                                   onPageChange,
+                                                   portionSize = 10,
+                                                   portionNumber
+                                               }) => {
+    const dispatch = useDispatch()
+    const pagesCount = Math.ceil(totalUsersCount / pageSize);
+    const pages: number[] = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
 
-    let portionCount = Math.ceil(pagesCount / portionSize);
-    const [portionNumber, setPortionNumber] = useState(1);
-    let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;
-    let rightPortionPageNumber = portionNumber * portionSize;
+    const portionCount = Math.ceil(pagesCount / portionSize);
+    const leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;
+    const rightPortionPageNumber = portionNumber * portionSize;
+
+
+    const decrementPortionNumberHandler = () => {
+        dispatch(UsersActionCreators.setPortionNumber(portionNumber - 1))
+    }
+
+    const incrementPortionNumberHandler = () => {
+        dispatch(UsersActionCreators.setPortionNumber(portionNumber + 1))
+    }
 
     return (
         <div className={styles.paginator}>
-            {portionNumber > 1 && <button onClick={() => { setPortionNumber(portionNumber - 1) }}>Prev</button>}
-            {pages
-                .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
-                .map((p) => {
-                    return <span key={p} className={cn({
-                        [styles.selectedPage]: currentPage === p
-                    }, styles.pageNumber)}
-                        onClick={() => { onPageChange(p) }}>{p}</span>
-                })}
-            {portionCount > portionNumber && <button onClick={() => { setPortionNumber(portionNumber + 1) }}> Next</button>}
-        </div >
+            <Button disabled={portionNumber <= 1} onClick={decrementPortionNumberHandler}>Prev</Button>
+            <div className={styles.btnContainer}>
+                {pages
+                    .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
+                    .map((p) => <Button
+                        type={currentPage === p ? 'primary' : 'default'}
+                        className={styles.button}
+                        key={p} value={p}
+                        onClick={() => {
+                            onPageChange(p)
+                        }}>{p}</Button>
+                    )}
+            </div>
+            <Button disabled={portionCount <= portionNumber} onClick={incrementPortionNumberHandler}> Next</Button>
+        </div>
     );
-
 }
-
-export default Paginator;     

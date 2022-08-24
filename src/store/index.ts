@@ -4,9 +4,9 @@ import reducers from './reducers'
 
 const rootReducer = combineReducers(reducers)
 
-type RootReducerType = typeof rootReducer
 
-export type AppStateType = ReturnType<RootReducerType>
+
+export type AppStateType = ReturnType<typeof rootReducer>
 
 
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>

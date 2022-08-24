@@ -1,7 +1,8 @@
 import React, {FC, useEffect} from 'react'
-import Paginator from '../../ui/Paginator/Paginator'
+import {Paginator} from '../../ui/Paginator/Paginator'
 import {User} from './User'
 import {useSelector, useDispatch} from 'react-redux'
+import {Pagination} from 'antd';
 import styles from './Users.module.scss';
 // import {useHistory} from 'react-router-dom'
 import * as queryString from 'querystring'
@@ -18,8 +19,16 @@ import {IFilter, IUser} from "../../../types/types";
 
 
 export const Users: FC = () => {
+    const {
+        users,
+        followingInProgress,
+        currentPage,
+        totalUsersCount,
+        pageSize,
+        filter, portionNumber
+    } = useSelector<AppStateType, IUserState>(state => state.users)
 
-    const {users, followingInProgress} = useSelector<AppStateType, IUserState>(state => state.users)
+    const dispatch = useDispatch()
 
     // const history = useHistory()
 
@@ -50,9 +59,12 @@ export const Users: FC = () => {
     //     })
     // }, [filter, currentPage])
 
-    // const onPageChange = (pageNumber: number) => {
-    //     // dispatch(UsersAsyncActionCreators.requestUsers(pageNumber, pageSize, filter))
-    // }
+
+    const onPageChange = (pageNumber: number) => {
+        // @ts-ignore
+        dispatch(UsersAsyncActionCreators.requestUsers(pageNumber, pageSize, filter))
+    }
+
     //
     // const onFilterChanged = (filter: IFilter) => {
     //     // dispatch(UsersAsyncActionCreators.requestUsers(1, pageSize, filter))
@@ -65,16 +77,10 @@ export const Users: FC = () => {
     // const unfollowThunk = (userId: number) => {
     //     // dispatch(UsersAsyncActionCreators.unfollow(userId))
     // }
+
+
     return (
-        <div>
-            <div>
-                {/*<Paginator*/}
-                {/*    currentPage={currentPage}*/}
-                {/*    onPageChange={onPageChange}*/}
-                {/*    totalUsersCount={totalUsersCount}*/}
-                {/*    pageSize={pageSize}*/}
-                {/*/>*/}
-            </div>
+        <>
             <div>
                 {users && users.map(user => <User
                     user={user}
@@ -84,9 +90,15 @@ export const Users: FC = () => {
                     // unfollow={unfollowThunk}
                 />)}
             </div>
-        </div>
+            <Paginator
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+                totalUsersCount={totalUsersCount}
+                pageSize={pageSize}
+                portionNumber={portionNumber}
+            />
+        </>
     );
-
 }
 
 

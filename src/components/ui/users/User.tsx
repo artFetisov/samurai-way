@@ -4,12 +4,9 @@ import {NavLink} from 'react-router-dom';
 import {IUser} from "../../../types/types";
 import {Button, Image} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
-import {Avatar} from 'antd';
-import Card from "antd/lib/card/Card";
-import {List} from "antd/lib/form/Form";
 import {Typography} from 'antd';
 
-const {Text, Link} = Typography;
+const {Text} = Typography;
 
 interface IUserProps {
     followingInProgress: number[]

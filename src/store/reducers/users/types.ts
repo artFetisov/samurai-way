@@ -4,6 +4,7 @@ export interface IUserState {
     users: IUser[]
     pageSize: number
     totalUsersCount: number
+    portionNumber: number
     currentPage: number
     isFetching: boolean
     followingInProgress: number[]
@@ -18,7 +19,8 @@ export enum UsersEnumAction {
     SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT',
     TOGGLE_PRELOADER = 'TOGGLE-PRELOADER',
     SET_FILTER = 'SET-FILTER',
-    TOGGLE_IN_PROGRESS = 'TOGGLE-IN-PROGRESS'
+    TOGGLE_IN_PROGRESS = 'TOGGLE-IN-PROGRESS',
+    SET_PORTION_NUMBER = 'SET-PORTION-NUMBER'
 }
 
 export interface FollowAction {
@@ -62,6 +64,11 @@ export interface ToggleInProgressAction {
     userId: number
 }
 
+export interface SetPortionNumberAction {
+    type: UsersEnumAction.SET_PORTION_NUMBER,
+    portionNumber: number
+}
+
 export type UsersActions =
     FollowAction
     | UnfollowAction
@@ -71,3 +78,4 @@ export type UsersActions =
     | TogglePreloaderAction
     | SetFilterAction
     | ToggleInProgressAction
+    | SetPortionNumberAction
