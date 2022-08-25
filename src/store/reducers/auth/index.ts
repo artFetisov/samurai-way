@@ -11,8 +11,10 @@ const initialState: IAuthState = {
 export default function authReducer(state = initialState, action: AuthActions): IAuthState {
     switch (action.type) {
         case AuthActionEnum.GET_CAPTCHA_URL_SUCCESS:
+            return {
+                ...state
+            }
 
-            return {...state}
         case AuthActionEnum.SET_USER_DATA:
             return {
                 ...state,

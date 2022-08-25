@@ -5,19 +5,31 @@ import {IUser} from "../../../types/types";
 import {Button, Image} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {Typography} from 'antd';
+import {useDispatch} from "react-redux";
+import {UsersAsyncActionCreators} from "../../../store/reducers/users/action-creators";
 
 const {Text} = Typography;
 
 interface IUserProps {
     followingInProgress: number[]
-    // unfollow: (userId: number) => void
-    // follow: (userId: number) => void
     user: IUser
 }
 
 export const User: FC<IUserProps> = ({user, followingInProgress}) => {
+    const dispatch = useDispatch()
+
     const smallPhoto = user.photos.small
     const largePhoto = user.photos.large
+
+    const onClickUnfollowHandler = () => {
+        // @ts-ignore
+        dispatch(UsersAsyncActionCreators.unfollow(user.id))
+    }
+
+    const onClickFollowHandler = () => {
+        // @ts-ignore
+        dispatch(UsersAsyncActionCreators.follow(user.id))
+    }
 
     return (
         <div className={styles.user}>
@@ -38,6 +50,7 @@ export const User: FC<IUserProps> = ({user, followingInProgress}) => {
                     className={styles.btn}
                     disabled={followingInProgress.some(id => id === user.id)}
                     type='primary'
+                    onClick={onClickUnfollowHandler}
                 >
                     Отписаться
                 </Button>
@@ -45,10 +58,10 @@ export const User: FC<IUserProps> = ({user, followingInProgress}) => {
                     className={styles.btn}
                     disabled={followingInProgress.some(id => id === user.id)}
                     type='primary'
+                    onClick={onClickFollowHandler}
                 >Подписаться</Button>
             }
         </div>
     );
-
 }
 

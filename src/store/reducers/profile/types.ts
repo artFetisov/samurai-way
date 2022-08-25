@@ -4,6 +4,7 @@ export interface IProfileState {
     posts: IPost[]
     userProfile: IProfile | null
     status: string
+    myProfile: IProfile | null
 }
 
 export enum ProfileEnumAction {
@@ -11,7 +12,8 @@ export enum ProfileEnumAction {
     SET_USER_PROFILE = 'SET-USER-PROFILE',
     SET_STATUS = 'SET-STATUS',
     DELETE_POST = 'DELETE-POST',
-    SET_PHOTO = 'SAVE-PHOTO'
+    SET_PHOTO = 'SAVE-PHOTO',
+    SET_MY_PROFILE = 'SET-MY-PROFILE'
 }
 
 export interface AddPostAction {
@@ -22,6 +24,11 @@ export interface AddPostAction {
 export interface SetUserProfileAction {
     type: ProfileEnumAction.SET_USER_PROFILE,
     userProfile: IProfile
+}
+
+export interface SetMyProfileAction {
+    type: ProfileEnumAction.SET_MY_PROFILE,
+    myProfile: IProfile
 }
 
 export interface DeletePostAction {
@@ -40,4 +47,10 @@ export interface SetPhotoAction {
 }
 
 
-export type ProfileActions = AddPostAction | SetUserProfileAction | DeletePostAction | SetStatusAction | SetPhotoAction
+export type ProfileActions =
+    AddPostAction
+    | SetUserProfileAction
+    | DeletePostAction
+    | SetStatusAction
+    | SetPhotoAction
+    | SetMyProfileAction

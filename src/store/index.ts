@@ -5,7 +5,6 @@ import reducers from './reducers'
 const rootReducer = combineReducers(reducers)
 
 
-
 export type AppStateType = ReturnType<typeof rootReducer>
 
 

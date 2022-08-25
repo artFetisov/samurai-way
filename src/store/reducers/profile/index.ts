@@ -12,6 +12,7 @@ const initialState: IProfileState = {
     ],
     userProfile: null,
     status: '',
+    myProfile: null
 }
 
 export default function profileReducer(state = initialState, action: ProfileActions): IProfileState {
@@ -37,6 +38,11 @@ export default function profileReducer(state = initialState, action: ProfileActi
             return {
                 ...state,
                 status: action.status,
+            }
+
+        case ProfileEnumAction.SET_MY_PROFILE:
+            return {
+                ...state, myProfile: action.myProfile
             }
 
         case ProfileEnumAction.DELETE_POST:

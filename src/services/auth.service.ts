@@ -1,5 +1,4 @@
-import {instance, ResultCodeEnum, ResultCodeForCaptcha} from './api'
-import {ResponseType} from './api'
+import {instance, ResponseType, ResultCodeEnum, ResultCodeForCaptcha} from "../api/api";
 
 type AuthResponseDataType = {
     id: number
@@ -11,7 +10,7 @@ type LoginResponseType = {
     userId: number
 }
 
-export const authAPI = {
+export const AuthService = {
     authLogin() {
         return instance
             .get<ResponseType<AuthResponseDataType>>(`auth/me`)

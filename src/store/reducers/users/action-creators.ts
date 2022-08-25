@@ -63,7 +63,7 @@ export const UsersAsyncActionCreators = {
         actionCreator: (userId: number) => UsersActions
     ) => {
         dispatch(UsersActionCreators.toggleProgress(true, userId))
-        let response = await apiMethod(userId)
+        const response = await apiMethod(userId)
         if (response.resultCode === ResultCodeEnum.Success) {
             dispatch(actionCreator(userId))
         }

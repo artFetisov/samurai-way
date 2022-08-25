@@ -15,6 +15,7 @@ beforeEach(() => {
             {id: 5, message: 'Believer', likesCount: 39}
         ],
         userProfile: null,
+        myProfile: null,
         status: ''
     };
 })

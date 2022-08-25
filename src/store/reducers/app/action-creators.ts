@@ -8,7 +8,7 @@ export const AppActionCreators = {
 
 export const AppAsyncActionCreators = {
     initializeApp: (): ThunkType => async (dispatch) => {
-        let promise = dispatch(AuthAsyncActionCreators.loginization())
+        const promise = dispatch(AuthAsyncActionCreators.loginization())
         Promise.all([promise]).then(() => {
             dispatch(AppActionCreators.initializedSuccess())
         })

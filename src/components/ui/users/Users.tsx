@@ -86,8 +86,6 @@ export const Users: FC = () => {
                     user={user}
                     key={user.id}
                     followingInProgress={followingInProgress}
-                    // follow={followThunk}
-                    // unfollow={unfollowThunk}
                 />)}
             </div>
             <Paginator

@@ -1,8 +1,10 @@
-export const updateObjectInArray = (items: any, itemId: any, objPropName: any, newObjProps: any) => {
-    // @ts-ignore
+import {IUser} from "../types/types";
+
+export const updateObjectInArray = (items: IUser[], itemId: number, objPropName: 'id', newObjProps: { followed: boolean }) => {
+
     return items.map(u => {
         if (u[objPropName] === itemId) {
-            return { ...u, ...newObjProps }
+            return {...u, ...newObjProps}
         }
         return u;
     });

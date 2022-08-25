@@ -1,9 +1,9 @@
-import {authAPI} from "../../../api/auth-api";
 import {ResultCodeEnum, ResultCodeForCaptcha} from "../../../api/api";
 // import {stopSubmit} from "redux-form";
 import {securityApi} from "../../../api/security-api";
 import {BaseThunkType} from "../../index";
 import {AuthActionEnum, AuthActions, SetUserDataAction} from "./types";
+import {AuthService} from "../../../services/auth.service";
 
 export const AuthActionCreators = {
     setUserData: (id: number | null, email: string | null, login: string | null, isAuth: boolean): SetUserDataAction =>
@@ -11,32 +11,35 @@ export const AuthActionCreators = {
             type: AuthActionEnum.SET_USER_DATA,
             payload: {id, email, login, isAuth},
         }),
-    getCaptchaUrlSuccess: (captchaUrl: string) => ({type: 'auth/SET_USER_DATA', payload: {captchaUrl}}),
+    getCaptchaUrlSuccess: (captchaUrl: string) => ({
+        type: AuthActionEnum.GET_CAPTCHA_URL_SUCCESS,
+        payload: {captchaUrl}
+    }),
 }
 
 export const AuthAsyncActionCreators = {
     loginization: (): ThunkType => async (dispatch) => {
-        let response = await authAPI.authLogin()
+        const response = await AuthService.authLogin()
         if (response.resultCode === ResultCodeEnum.Success) {
-            let {id, email, login} = response.data
+            const {id, email, login} = response.data
             dispatch(AuthActionCreators.setUserData(id, email, login, true))
         }
     },
-    // login: (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType =>
-    //     async (dispatch) => {
-    //         let response = await authAPI.login(email, password, rememberMe, captcha)
-    //         if (response.resultCode === ResultCodeEnum.Success) {
-    //             dispatch(AuthAsyncActionCreators.loginization())
-    //         } else {
-    //             if (response.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
-    //                 dispatch(AuthAsyncActionCreators.getCaptchaUrl())
-    //             }
-    //             let message = response.messages.length > 0 ? response.messages : 'Some Error'
-    //             dispatch(stopSubmit('login', {_error: message}))
-    //         }
-    //     },
+    login: (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType =>
+        async (dispatch) => {
+            let response = await AuthService.login(email, password, rememberMe, captcha)
+            if (response.resultCode === ResultCodeEnum.Success) {
+                dispatch(AuthAsyncActionCreators.loginization())
+            } else {
+                if (response.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
+                    dispatch(AuthAsyncActionCreators.getCaptchaUrl())
+                }
+                let message = response.messages.length > 0 ? response.messages : 'Some Error'
+                // dispatch(stopSubmit('login', {_error: message}))
+            }
+        },
     logout: (): ThunkType => async (dispatch) => {
-        let response = await authAPI.logout()
+        let response = await AuthService.logout()
         if (response.resultCode === ResultCodeEnum.Success) {
             dispatch(AuthActionCreators.setUserData(null, null, null, false))
         }

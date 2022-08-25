@@ -3,8 +3,10 @@ import {BaseThunkType} from "../../index";
 import {IPhotos, IProfile} from "../../../types/types";
 import {
     AddPostAction,
-    DeletePostAction, ProfileActions,
+    DeletePostAction,
+    ProfileActions,
     ProfileEnumAction,
+    SetMyProfileAction,
     SetPhotoAction,
     SetStatusAction,
     SetUserProfileAction
@@ -19,17 +21,23 @@ export const ProfileActionCreators = {
         type: ProfileEnumAction.SET_USER_PROFILE,
         userProfile
     }),
+    setMyProfile: (myProfile: IProfile): SetMyProfileAction => ({type: ProfileEnumAction.SET_MY_PROFILE, myProfile}),
     setStatus: (status: string): SetStatusAction => ({type: ProfileEnumAction.SET_STATUS, status}),
     savePhotoSuccess: (photos: IPhotos): SetPhotoAction => ({type: ProfileEnumAction.SET_PHOTO, photos}),
 }
 
-
 export const ProfileAsyncActionCreators = {
     getUserProfile: (userId: number | null): ThunkType =>
         async (dispatch: Dispatch<ProfileActions>) => {
-            let response = await ProfileService.getUserProfile(userId)
+            const response = await ProfileService.getUserProfile(userId)
             dispatch(ProfileActionCreators.setUserProfile(response))
         },
+    getMyProfile: (userId: number | null): ThunkType =>
+        async (dispatch: Dispatch<ProfileActions>) => {
+            const response = await ProfileService.getUserProfile(userId)
+            dispatch(ProfileActionCreators.setMyProfile(response))
+        }
+    ,
     getUserStatus: (userId: number): ThunkType =>
         async (dispatch) => {
             let response = await ProfileService.getStatus(userId)
