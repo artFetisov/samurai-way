@@ -6,6 +6,7 @@ import {
     DeletePostAction,
     ProfileActions,
     ProfileEnumAction,
+    SetIsLoadingAction,
     SetMyProfileAction,
     SetPhotoAction,
     SetStatusAction,
@@ -24,13 +25,16 @@ export const ProfileActionCreators = {
     setMyProfile: (myProfile: IProfile): SetMyProfileAction => ({type: ProfileEnumAction.SET_MY_PROFILE, myProfile}),
     setStatus: (status: string): SetStatusAction => ({type: ProfileEnumAction.SET_STATUS, status}),
     savePhotoSuccess: (photos: IPhotos): SetPhotoAction => ({type: ProfileEnumAction.SET_PHOTO, photos}),
+    setIsLoading: (isLoading: boolean): SetIsLoadingAction => ({type: ProfileEnumAction.SET_IS_LOADING, isLoading})
 }
 
-export const ProfileAsyncActionCreators = {
+export const ProfileThunkCreators = {
     getUserProfile: (userId: number | null): ThunkType =>
         async (dispatch: Dispatch<ProfileActions>) => {
+            dispatch(ProfileActionCreators.setIsLoading(false))
             const response = await ProfileService.getUserProfile(userId)
             dispatch(ProfileActionCreators.setUserProfile(response))
+            dispatch(ProfileActionCreators.setIsLoading(true))
         },
     getMyProfile: (userId: number | null): ThunkType =>
         async (dispatch: Dispatch<ProfileActions>) => {
@@ -62,7 +66,7 @@ export const ProfileAsyncActionCreators = {
             const userId = getState().auth.id
             const response = await ProfileService.saveProfile(profile)
             if (response.resultCode === 0) {
-                dispatch(ProfileAsyncActionCreators.getUserProfile(userId))
+                dispatch(ProfileThunkCreators.getUserProfile(userId))
             } else {
                 // dispatch(stopSubmit('profile', {_error: response.messages[0]}))
                 return Promise.reject(response.messages[0])

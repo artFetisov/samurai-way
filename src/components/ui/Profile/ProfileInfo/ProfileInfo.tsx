@@ -18,15 +18,15 @@ type PropsType = {
     updateStatus?: (status: string) => void
 }
 
-const ProfileInfo: React.FC<PropsType> = ({
-                                              userProfile,
-                                              isOwner,
-                                              saveProfile,
-                                              savePhoto,
-                                              status,
-                                              updateStatus,
-                                              ...props
-                                          }) => {
+export const ProfileInfo: React.FC<PropsType> = React.memo(({
+                                                                userProfile,
+                                                                isOwner,
+                                                                saveProfile,
+                                                                savePhoto,
+                                                                status,
+                                                                updateStatus,
+                                                                ...props
+                                                            }) => {
 
     const [editMode, setEditMode] = useState(false);
 
@@ -84,7 +84,7 @@ const ProfileInfo: React.FC<PropsType> = ({
             {/*</div>*/}
         </div>
     );
-}
+})
 
 type ProfileDataPropsType = {
     userProfile: IProfile
@@ -130,5 +130,3 @@ type ContactsPropsType = {
 const Contact: React.FC<ContactsPropsType> = ({contactTitle, contactValue}) => {
     return <div><b>{contactTitle}</b> : {contactValue}</div>
 }
-
-export default ProfileInfo;

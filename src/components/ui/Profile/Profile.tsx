@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Profile.module.scss';
-import ProfileInfo from './ProfileInfo/ProfileInfo';
+import {ProfileInfo} from './ProfileInfo/ProfileInfo';
 import {IProfile} from "../../../types/types";
 
 interface IProfileProps {
@@ -12,7 +12,7 @@ interface IProfileProps {
     saveProfile?: (profile: IProfile) => Promise<any>
 }
 
-const Profile: React.FC<IProfileProps> = (props) => {
+export const Profile: React.FC<IProfileProps> = React.memo((props) => {
     return <div className={styles.container}>
         <ProfileInfo userProfile={props.userProfile}
                      isOwner={props.isOwner}
@@ -22,7 +22,4 @@ const Profile: React.FC<IProfileProps> = (props) => {
                      saveProfile={props.saveProfile}
         />
     </div>
-
-}
-
-export default Profile;
+})

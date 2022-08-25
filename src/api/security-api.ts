@@ -5,7 +5,7 @@ type GetCaptchaUrlResponseType = {
 }
 
 export const securityApi = {
-    getCaptchaUrl() {
+    async getCaptchaUrl() {
         return instance.get<GetCaptchaUrlResponseType>(`security/get-captcha-url`).then(response => response.data)
     }
 }

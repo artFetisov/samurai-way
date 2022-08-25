@@ -5,6 +5,7 @@ export interface IProfileState {
     userProfile: IProfile | null
     status: string
     myProfile: IProfile | null
+    isLoading: boolean
 }
 
 export enum ProfileEnumAction {
@@ -13,7 +14,8 @@ export enum ProfileEnumAction {
     SET_STATUS = 'SET-STATUS',
     DELETE_POST = 'DELETE-POST',
     SET_PHOTO = 'SAVE-PHOTO',
-    SET_MY_PROFILE = 'SET-MY-PROFILE'
+    SET_MY_PROFILE = 'SET-MY-PROFILE',
+    SET_IS_LOADING = 'SET-IS-LOADING'
 }
 
 export interface AddPostAction {
@@ -46,6 +48,11 @@ export interface SetPhotoAction {
     photos: IPhotos
 }
 
+export interface SetIsLoadingAction {
+    type: ProfileEnumAction.SET_IS_LOADING,
+    isLoading: boolean
+}
+
 
 export type ProfileActions =
     AddPostAction
@@ -54,3 +61,4 @@ export type ProfileActions =
     | SetStatusAction
     | SetPhotoAction
     | SetMyProfileAction
+    | SetIsLoadingAction

@@ -11,12 +11,12 @@ type LoginResponseType = {
 }
 
 export const AuthService = {
-    authLogin() {
+    async authLogin() {
         return instance
             .get<ResponseType<AuthResponseDataType>>(`auth/me`)
             .then((response) => response.data)
     },
-    login(email: string, password: string, rememberMe = false, captcha: null | string = null) {
+    async login(email: string, password: string, rememberMe = false, captcha: null | string = null) {
         return instance
             .post<ResponseType<LoginResponseType, ResultCodeEnum | ResultCodeForCaptcha>>(`auth/login`, {
                 email,
@@ -26,7 +26,7 @@ export const AuthService = {
             })
             .then((response) => response.data)
     },
-    logout() {
+    async logout() {
         return instance.delete(`auth/login`).then((response) => response.data)
     },
 }

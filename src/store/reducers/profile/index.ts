@@ -12,7 +12,8 @@ const initialState: IProfileState = {
     ],
     userProfile: null,
     status: '',
-    myProfile: null
+    myProfile: null,
+    isLoading: false
 }
 
 export default function profileReducer(state = initialState, action: ProfileActions): IProfileState {
@@ -39,6 +40,14 @@ export default function profileReducer(state = initialState, action: ProfileActi
                 ...state,
                 status: action.status,
             }
+
+        case ProfileEnumAction.SET_IS_LOADING: {
+            return {
+                ...state,
+                isLoading: action.isLoading
+            }
+        }
+
 
         case ProfileEnumAction.SET_MY_PROFILE:
             return {

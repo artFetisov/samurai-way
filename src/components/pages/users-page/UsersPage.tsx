@@ -8,8 +8,10 @@ import styles from "../../ui/users/Users.module.scss";
 import React from 'react';
 import {Col, Row} from 'antd';
 import {MyLoader} from "../../ui/loader/SkeletonLoader";
+import {useAuthRedirect} from "../../../hooks/useAuthRedirect";
 
 export const UsersPage: FC = () => {
+    // useAuthRedirect()
     const dispatch = useDispatch()
     const {
         currentPage,

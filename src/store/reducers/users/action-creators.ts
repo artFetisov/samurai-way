@@ -48,13 +48,17 @@ export const UsersActionCreators = {
 export const UsersAsyncActionCreators = {
     requestUsers: (currentPage: number, pageSize: number, filter: IFilter): ThunkType =>
         async (dispatch: Dispatch<UsersActions>) => {
-            dispatch(UsersActionCreators.togglePreloader(true))
-            dispatch(UsersActionCreators.setCurrentPage(currentPage))
-            dispatch(UsersActionCreators.setFilter(filter))
-            const response = await UsersService.getUsers(currentPage, pageSize, filter.term, filter.friend)
-            dispatch(UsersActionCreators.togglePreloader(false))
-            dispatch(UsersActionCreators.setUsers(response.items))
-            dispatch(UsersActionCreators.setTotalUsersCount(response.totalCount))
+            try {
+                dispatch(UsersActionCreators.togglePreloader(true))
+                dispatch(UsersActionCreators.setCurrentPage(currentPage))
+                dispatch(UsersActionCreators.setFilter(filter))
+                const response = await UsersService.getUsers(currentPage, pageSize, filter.term, filter.friend)
+                dispatch(UsersActionCreators.togglePreloader(false))
+                dispatch(UsersActionCreators.setUsers(response.items))
+                dispatch(UsersActionCreators.setTotalUsersCount(response.totalCount))
+            } catch (e) {
+                console.log(e)
+            }
         },
     followUnfollowFlow: async (
         dispatch: Dispatch<UsersActions>,
@@ -62,22 +66,34 @@ export const UsersAsyncActionCreators = {
         apiMethod: (userId: number) => Promise<ResponseType>,
         actionCreator: (userId: number) => UsersActions
     ) => {
-        dispatch(UsersActionCreators.toggleProgress(true, userId))
-        const response = await apiMethod(userId)
-        if (response.resultCode === ResultCodeEnum.Success) {
-            dispatch(actionCreator(userId))
+        try {
+            dispatch(UsersActionCreators.toggleProgress(true, userId))
+            const response = await apiMethod(userId)
+            if (response.resultCode === ResultCodeEnum.Success) {
+                dispatch(actionCreator(userId))
+            }
+            dispatch(UsersActionCreators.toggleProgress(false, userId))
+        } catch (e) {
+            console.log(e)
         }
-        dispatch(UsersActionCreators.toggleProgress(false, userId))
     },
     follow: (userId: number): ThunkType =>
         async (dispatch) => {
-            // @ts-ignore
-            await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.followUser.bind(UsersService), UsersActionCreators.followSuccess)
+            try {
+                // @ts-ignore
+                await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.followUser.bind(UsersService), UsersActionCreators.followSuccess)
+            } catch (e) {
+                console.log(e)
+            }
         },
     unfollow: (userId: number): ThunkType =>
         async (dispatch) => {
-            // @ts-ignore
-            await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.unfollowUser.bind(UsersService), UsersActionCreators.unfollowSuccess)
+            try {
+                // @ts-ignore
+                await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.unfollowUser.bind(UsersService), UsersActionCreators.unfollowSuccess)
+            } catch (e) {
+                console.log(e)
+            }
         }
 }
 

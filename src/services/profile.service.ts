@@ -6,18 +6,19 @@ type SavePhotoResponseType = {
 }
 
 export const ProfileService = {
-    getUserProfile: (userId: number | null) => {
+    async getUserProfile(userId: number | null) {
         return instance.get<IProfile>(`profile/${userId}`).then((response) => response.data)
-    },
-    getStatus: (userId: number) => {
+    }
+    ,
+    async getStatus(userId: number) {
         return instance.get<string>(`profile/status/${userId}`).then((response) => response.data)
     },
-    updateStatus: (status: string) => {
+    async updateStatus(status: string) {
         return instance
             .put<ResponseType>(`profile/status`, {status: status})
             .then((response) => response.data)
     },
-    savePhoto: (photo: any) => {
+    async savePhoto(photo: any) {
         const formData = new FormData()
         formData.append('image', photo)
         return instance
@@ -26,7 +27,7 @@ export const ProfileService = {
             })
             .then((response) => response.data)
     },
-    saveProfile: (profile: IProfile) => {
+    async saveProfile(profile: IProfile) {
         return instance.put(`profile`, profile).then((response) => response.data)
     },
 }

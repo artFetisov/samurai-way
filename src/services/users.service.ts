@@ -8,7 +8,7 @@ type GetUsersResponseType = {
 }
 
 export const UsersService = {
-    getUsers(currentPage: number, pageSize: number, term: string, friend: null | boolean = null) {
+    async getUsers(currentPage: number, pageSize: number, term: string, friend: null | boolean = null) {
         return instance
             .get<GetUsersResponseType>(
                 `users?page=${currentPage}&count=${pageSize}&term=${term}` +
@@ -16,10 +16,10 @@ export const UsersService = {
             )
             .then((response) => response.data)
     },
-    followUser(id: number) {
+    async followUser(id: number) {
         return instance.post<ResponseType>(`follow/${id}`).then((response) => response.data)
     },
-    unfollowUser(id: number) {
+    async unfollowUser(id: number) {
         return instance
             .delete(`follow/${id}`)
             .then((response) => response.data) as Promise<ResponseType>
