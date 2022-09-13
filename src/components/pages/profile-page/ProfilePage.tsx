@@ -1,23 +1,20 @@
 import React, {FC, useEffect} from "react";
-import {useDispatch} from "react-redux";
 import {useParams} from "react-router-dom";
 import {ProfileThunkCreators} from "../../../store/reducers/profile/action-creators";
 import {useTypedSelector} from "../../../hooks/useTypedSelector";
-import {useAuthRedirect} from "../../../hooks/useAuthRedirect";
 import {Profile} from "../../ui/Profile/ProfileInfo/Profile";
-import {Col, Row} from "antd";
-import styles from "../../ui/users/Users.module.scss";
+import {Row} from "antd";
+import styles from '../../ui/Profile/Profile.module.scss';
 import {useTypedDispatch} from "../../../hooks/useTypedDispatch";
 
 export const ProfilePage: FC = () => {
-    // useAuthRedirect()
-    let isOwner = null
+    let isOwner = false
     const dispatch = useTypedDispatch()
     const {id} = useParams()
     const {userProfile, myProfile, isLoading} = useTypedSelector(state => state.profile)
 
-    if (userProfile) {
-        isOwner = id === String(userProfile?.userId)
+    if (myProfile) {
+        isOwner = id === String(myProfile?.userId)
     }
 
     useEffect(() => {
@@ -28,8 +25,8 @@ export const ProfilePage: FC = () => {
 
     if (!isLoading) return <div>...загрузка</div>
     return <Row>
-        <Col className={styles.container}>
+        <div className={styles.container}>
             <Profile userProfile={userProfile} isOwner={isOwner}/>
-        </Col>
+        </div>
     </Row>
 }

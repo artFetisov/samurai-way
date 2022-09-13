@@ -4,6 +4,7 @@ import {securityApi} from "../../../api/security-api";
 import {AppRootThunk} from "../../index";
 import {AuthActionEnum, AuthActions, SetUserDataAction} from "./types";
 import {AuthService} from "../../../services/auth.service";
+import {ProfileThunkCreators} from "../profile/action-creators";
 
 export const AuthActionCreators = {
     setUserData: (id: number | null, email: string | null, login: string | null, isAuth: boolean): SetUserDataAction =>
@@ -22,6 +23,7 @@ export const AuthAsyncActionCreators = {
         const response = await AuthService.authLogin()
         if (response.resultCode === ResultCodeEnum.Success) {
             const {id, email, login} = response.data
+            dispatch(ProfileThunkCreators.getMyProfile(id))
             dispatch(AuthActionCreators.setUserData(id, email, login, true))
         }
     },

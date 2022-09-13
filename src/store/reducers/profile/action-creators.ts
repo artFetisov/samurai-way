@@ -31,7 +31,7 @@ export const ProfileThunkCreators = {
     getUserProfile: (userId: number | null): AppRootThunk => async dispatch => {
         dispatch(ProfileActionCreators.setIsLoading(false))
         const response = await ProfileService.getUserProfile(userId)
-        dispatch(ProfileThunkCreators.getUserStatus(userId as number))
+        await dispatch(ProfileThunkCreators.getUserStatus(userId as number))
         dispatch(ProfileActionCreators.setUserProfile(response))
         dispatch(ProfileActionCreators.setIsLoading(true))
     },

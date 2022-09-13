@@ -15,7 +15,7 @@ export const ProfileService = {
     },
     async updateStatus(status: string) {
         return instance
-            .put<ResponseType>(`profile/status`, {status: status})
+            .put<ResponseType>(`profile/status`, {status})
             .then((response) => response.data)
     },
     async savePhoto(photo: any) {
