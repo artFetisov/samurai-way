@@ -1,5 +1,5 @@
 import {FC, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {UsersAsyncActionCreators} from "../../../store/reducers/users/action-creators";
 import {AppStateType} from "../../../store";
 import {IUserState} from "../../../store/reducers/users/types";
@@ -8,11 +8,11 @@ import styles from "../../ui/users/Users.module.scss";
 import React from 'react';
 import {Col, Row} from 'antd';
 import {MyLoader} from "../../ui/loader/SkeletonLoader";
-import {useAuthRedirect} from "../../../hooks/useAuthRedirect";
+import {useTypedDispatch} from "../../../hooks/useTypedDispatch";
 
 export const UsersPage: FC = () => {
     // useAuthRedirect()
-    const dispatch = useDispatch()
+    const dispatch = useTypedDispatch()
     const {
         currentPage,
         filter,
@@ -21,7 +21,6 @@ export const UsersPage: FC = () => {
     } = useSelector<AppStateType, IUserState>(state => state.users)
 
     useEffect(() => {
-        // @ts-ignore
         dispatch(UsersAsyncActionCreators.requestUsers(currentPage, pageSize, filter))
     }, [])
 

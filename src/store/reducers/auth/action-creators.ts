@@ -1,7 +1,7 @@
 import {ResultCodeEnum, ResultCodeForCaptcha} from "../../../api/api";
 // import {stopSubmit} from "redux-form";
 import {securityApi} from "../../../api/security-api";
-import {BaseThunkType} from "../../index";
+import {AppRootThunk} from "../../index";
 import {AuthActionEnum, AuthActions, SetUserDataAction} from "./types";
 import {AuthService} from "../../../services/auth.service";
 
@@ -18,15 +18,15 @@ export const AuthActionCreators = {
 }
 
 export const AuthAsyncActionCreators = {
-    loginization: (): ThunkType => async (dispatch) => {
+    loginization: (): AppRootThunk => async dispatch => {
         const response = await AuthService.authLogin()
         if (response.resultCode === ResultCodeEnum.Success) {
             const {id, email, login} = response.data
             dispatch(AuthActionCreators.setUserData(id, email, login, true))
         }
     },
-    login: (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType =>
-        async (dispatch) => {
+    login: (email: string, password: string, rememberMe: boolean, captcha: string): AppRootThunk =>
+        async dispatch => {
             let response = await AuthService.login(email, password, rememberMe, captcha)
             if (response.resultCode === ResultCodeEnum.Success) {
                 dispatch(AuthAsyncActionCreators.loginization())
@@ -38,18 +38,15 @@ export const AuthAsyncActionCreators = {
                 // dispatch(stopSubmit('login', {_error: message}))
             }
         },
-    logout: (): ThunkType => async (dispatch) => {
+    logout: (): AppRootThunk => async dispatch => {
         let response = await AuthService.logout()
         if (response.resultCode === ResultCodeEnum.Success) {
             dispatch(AuthActionCreators.setUserData(null, null, null, false))
         }
     },
-    getCaptchaUrl: (): ThunkType => async (dispatch) => {
+    getCaptchaUrl: (): AppRootThunk => async dispatch => {
         let response = await securityApi.getCaptchaUrl()
         let captchaUrl = response.url
         // dispatch(AuthActionCreators.getCaptchaUrlSuccess(captchaUrl))
     }
 }
-
-type ThunkType = BaseThunkType<AuthActions>
-// | ReturnType<typeof stopSubmit

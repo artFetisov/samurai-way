@@ -17,7 +17,8 @@ beforeEach(() => {
         userProfile: null,
         myProfile: null,
         status: '',
-        isLoading: false
+        isLoading: false,
+        isOwner: false
     };
 })
 

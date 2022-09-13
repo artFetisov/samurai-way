@@ -10,6 +10,7 @@ import {AppStateType} from "../../../store";
 import {IUserState} from "../../../store/reducers/users/types";
 import {UsersAsyncActionCreators} from "../../../store/reducers/users/action-creators";
 import {IFilter, IUser} from "../../../types/types";
+import {useTypedDispatch} from "../../../hooks/useTypedDispatch";
 
 // type QueryParamsType = {
 //     term?: string
@@ -28,7 +29,7 @@ export const Users: FC = () => {
         filter, portionNumber
     } = useSelector<AppStateType, IUserState>(state => state.users)
 
-    const dispatch = useDispatch()
+    const dispatch = useTypedDispatch()
 
     // const history = useHistory()
 
@@ -61,7 +62,6 @@ export const Users: FC = () => {
 
 
     const onPageChange = (pageNumber: number) => {
-        // @ts-ignore
         dispatch(UsersAsyncActionCreators.requestUsers(pageNumber, pageSize, filter))
     }
 

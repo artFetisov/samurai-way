@@ -5,8 +5,8 @@ import {IUser} from "../../../types/types";
 import {Button, Image} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {Typography} from 'antd';
-import {useDispatch} from "react-redux";
 import {UsersAsyncActionCreators} from "../../../store/reducers/users/action-creators";
+import {useTypedDispatch} from "../../../hooks/useTypedDispatch";
 
 const {Text} = Typography;
 
@@ -16,18 +16,16 @@ interface IUserProps {
 }
 
 export const User: FC<IUserProps> = ({user, followingInProgress}) => {
-    const dispatch = useDispatch()
+    const dispatch = useTypedDispatch()
 
     const smallPhoto = user.photos.small
     const largePhoto = user.photos.large
 
     const onClickUnfollowHandler = () => {
-        // @ts-ignore
         dispatch(UsersAsyncActionCreators.unfollow(user.id))
     }
 
     const onClickFollowHandler = () => {
-        // @ts-ignore
         dispatch(UsersAsyncActionCreators.follow(user.id))
     }
 

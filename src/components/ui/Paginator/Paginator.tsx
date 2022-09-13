@@ -1,8 +1,8 @@
 import React, {FC, useState} from 'react'
 import styles from './Paginator.module.scss'
-import {Button, Radio} from "antd";
-import {useDispatch} from "react-redux";
-import {UsersActionCreators, UsersAsyncActionCreators} from "../../../store/reducers/users/action-creators";
+import {Button,} from "antd";
+import {UsersActionCreators} from "../../../store/reducers/users/action-creators";
+import {useTypedDispatch} from "../../../hooks/useTypedDispatch";
 
 interface IPaginatorProps {
     totalUsersCount: number
@@ -21,7 +21,7 @@ export const Paginator: FC<IPaginatorProps> = ({
                                                    portionSize = 10,
                                                    portionNumber
                                                }) => {
-    const dispatch = useDispatch()
+    const dispatch = useTypedDispatch()
     const pagesCount = Math.ceil(totalUsersCount / pageSize);
     const pages: number[] = [];
     for (let i = 1; i <= pagesCount; i++) {

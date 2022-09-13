@@ -13,7 +13,8 @@ const initialState: IProfileState = {
     userProfile: null,
     status: '',
     myProfile: null,
-    isLoading: false
+    isLoading: false,
+    isOwner: null
 }
 
 export default function profileReducer(state = initialState, action: ProfileActions): IProfileState {

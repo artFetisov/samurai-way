@@ -1,60 +1,53 @@
-import React, { ChangeEvent } from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent} from 'react';
+import {useState} from 'react';
+import {useDispatch} from "react-redux";
+import {Profile} from "./Profile";
+import {ProfileActionCreators, ProfileThunkCreators} from "../../../../store/reducers/profile/action-creators";
+import {useTypedSelector} from "../../../../hooks/useTypedSelector";
+import {useTypedDispatch} from "../../../../hooks/useTypedDispatch";
 
-type PropsType = {
-    status: string
-    updateStatus: (status: string) => void
-}
+export const ProfileStatus: FC = () => {
+    const status = useTypedSelector(state => state.profile.status)
+    const dispatch = useTypedDispatch()
+    const [editMode, setEditMode] = useState(false)
+    const [newStatus, setNewStatus] = useState('')
 
-type StateType = {
-    editMode: boolean
-    status: string
-}
+    const setEditModeHandler = () => {
+        setEditMode(true)
+        setNewStatus(status)
+    }
 
-class ProfileStatus extends React.Component<PropsType, StateType> {
-    constructor(props: PropsType) {
-        super(props)
-        this.state = {
-            editMode: false,
-            status: this.props.status
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            changeStatus()
         }
     }
 
-    activateEditMode = () => {
-        this.setState({ editMode: true })
+    const changeStatus = () => {
+        setEditMode(false)
+        dispatch(ProfileThunkCreators.updateUserStatus(newStatus))
     }
 
-    deactivateEditMode = () => {
-        this.setState({ editMode: false })
-        this.props.updateStatus(this.state.status)
+    const onChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewStatus(e.currentTarget.value)
     }
 
-    onChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({ status: e.currentTarget.value })
-    }
-
-    componentDidUpdate(prevProps: PropsType) {
-        if (prevProps.status !== this.props.status) {
-            this.setState({ status: this.props.status })
-        }
-    }
-
-    render() {
-
-        return (
-            <div>
-
-                {!this.state.editMode
-                    && <div>
-                        <span onDoubleClick={this.activateEditMode}>{this.props.status || 'no status'}</span>
-                    </div>}
-
-                {this.state.editMode
-                    && <div>
-                        <input onChange={this.onChangeStatus} autoFocus={true} defaultValue={this.state.status} onBlur={this.deactivateEditMode} />
-                    </div>}
-            </div>
-        );
-    }
+    return (
+        <div>
+            <b>Status</b> :
+            {!editMode &&
+                <div>
+                    <span onDoubleClick={setEditModeHandler}>{status || 'no status'}</span>
+                </div>}
+            {editMode
+                && <div>
+                    <span>
+                        <input onChange={onChangeStatus} autoFocus={true}
+                               onBlur={changeStatus} value={newStatus}
+                               onKeyDown={onKeyPressHandler}
+                        />
+                    </span>
+                </div>}
+        </div>
+    );
 }
-
-export default ProfileStatus;

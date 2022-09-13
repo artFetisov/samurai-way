@@ -1,34 +1,18 @@
-import React, {ChangeEvent} from 'react';
+import React, {FC} from 'react';
 import styles from './ProfileInfo.module.scss';
-import ProfileStatusWithHooks from './ProfileStatusWithHooks';
-import userPhoto from '../../../assets/photo.png';
+import {ProfileStatus} from './ProfileStatus';
 import {useState} from 'react';
 // import {ProfileDataReduxForm} from './ProfileDataForm';
 import {IProfile} from "../../../../types/types";
-import Preloader from "../../Preloader/Preloader";
 import {Image} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 
-type PropsType = {
+interface IProfileProps {
     userProfile: IProfile | null
-    isOwner?: boolean
-    saveProfile?: (profile: IProfile) => Promise<any>
-    savePhoto?: (file: File) => void
-    status?: string
-    updateStatus?: (status: string) => void
+    isOwner: boolean | null
 }
 
-export const ProfileInfo: React.FC<PropsType> = React.memo(({
-                                                                userProfile,
-                                                                isOwner,
-                                                                saveProfile,
-                                                                savePhoto,
-                                                                status,
-                                                                updateStatus,
-                                                                ...props
-                                                            }) => {
-
-    const [editMode, setEditMode] = useState(false);
+export const Profile: FC<IProfileProps> = React.memo(({userProfile, isOwner}) => {
 
     // if (!userProfile) {
     //     return <Preloader/>
@@ -44,6 +28,7 @@ export const ProfileInfo: React.FC<PropsType> = React.memo(({
     //         setEditMode(false)
     //     })
     // }
+
 
     return (
         <div>
@@ -77,11 +62,11 @@ export const ProfileInfo: React.FC<PropsType> = React.memo(({
                 <div>{userProfile?.lookingForAJobDescription}</div>
             </div>
 
-            {/*<div className={styles.status}>*/}
-            {/*    <ProfileStatusWithHooks status={status}*/}
-            {/*                            updateStatus={updateStatus}*/}
-            {/*    />*/}
-            {/*</div>*/}
+
+            <div className={styles.status}>
+                {isOwner === null && <div>...загрузка</div>}
+                {isOwner !== null && isOwner === true ? <ProfileStatus/> : <div> no status</div>}
+            </div>
         </div>
     );
 })

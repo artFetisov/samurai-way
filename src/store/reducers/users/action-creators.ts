@@ -1,6 +1,5 @@
 import {Dispatch} from "redux";
 import {ResponseType, ResultCodeEnum} from "../../../api/api";
-import {BaseThunkType} from "../../index";
 import {
     FollowAction,
     SetCurrentPageAction,
@@ -16,6 +15,7 @@ import {
 } from "./types";
 import {IFilter, IUser} from "../../../types/types";
 import {UsersService} from "../../../services/users.service";
+import {AppRootThunk} from "../../index";
 
 export const UsersActionCreators = {
     followSuccess: (userId: number): FollowAction => ({type: UsersEnumAction.FOLLOW, userId}),
@@ -46,20 +46,19 @@ export const UsersActionCreators = {
 }
 
 export const UsersAsyncActionCreators = {
-    requestUsers: (currentPage: number, pageSize: number, filter: IFilter): ThunkType =>
-        async (dispatch: Dispatch<UsersActions>) => {
-            try {
-                dispatch(UsersActionCreators.togglePreloader(true))
-                dispatch(UsersActionCreators.setCurrentPage(currentPage))
-                dispatch(UsersActionCreators.setFilter(filter))
-                const response = await UsersService.getUsers(currentPage, pageSize, filter.term, filter.friend)
-                dispatch(UsersActionCreators.togglePreloader(false))
-                dispatch(UsersActionCreators.setUsers(response.items))
-                dispatch(UsersActionCreators.setTotalUsersCount(response.totalCount))
-            } catch (e) {
-                console.log(e)
-            }
-        },
+    requestUsers: (currentPage: number, pageSize: number, filter: IFilter): AppRootThunk => async dispatch => {
+        try {
+            dispatch(UsersActionCreators.togglePreloader(true))
+            dispatch(UsersActionCreators.setCurrentPage(currentPage))
+            dispatch(UsersActionCreators.setFilter(filter))
+            const response = await UsersService.getUsers(currentPage, pageSize, filter.term, filter.friend)
+            dispatch(UsersActionCreators.togglePreloader(false))
+            dispatch(UsersActionCreators.setUsers(response.items))
+            dispatch(UsersActionCreators.setTotalUsersCount(response.totalCount))
+        } catch (e) {
+            console.log(e)
+        }
+    },
     followUnfollowFlow: async (
         dispatch: Dispatch<UsersActions>,
         userId: number,
@@ -77,24 +76,21 @@ export const UsersAsyncActionCreators = {
             console.log(e)
         }
     },
-    follow: (userId: number): ThunkType =>
-        async (dispatch) => {
-            try {
-                // @ts-ignore
-                await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.followUser.bind(UsersService), UsersActionCreators.followSuccess)
-            } catch (e) {
-                console.log(e)
-            }
-        },
-    unfollow: (userId: number): ThunkType =>
-        async (dispatch) => {
-            try {
-                // @ts-ignore
-                await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.unfollowUser.bind(UsersService), UsersActionCreators.unfollowSuccess)
-            } catch (e) {
-                console.log(e)
-            }
+    follow: (userId: number): AppRootThunk => async dispatch => {
+        try {
+            // @ts-ignore
+            await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.followUser.bind(UsersService), UsersActionCreators.followSuccess)
+        } catch (e) {
+            console.log(e)
         }
+    },
+    unfollow: (userId: number): AppRootThunk => async dispatch => {
+        try {
+            // @ts-ignore
+            await UsersAsyncActionCreators.followUnfollowFlow(dispatch, userId, UsersService.unfollowUser.bind(UsersService), UsersActionCreators.unfollowSuccess)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 }
 
-type ThunkType = BaseThunkType<UsersActions>
