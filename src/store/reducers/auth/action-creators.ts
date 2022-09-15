@@ -18,37 +18,55 @@ export const AuthActionCreators = {
     }),
 }
 
-export const AuthAsyncActionCreators = {
+export const AuthThunkCreators = {
     loginization: (): AppRootThunk => async dispatch => {
-        const response = await AuthService.authLogin()
-        if (response.resultCode === ResultCodeEnum.Success) {
-            const {id, email, login} = response.data
-            dispatch(ProfileThunkCreators.getMyProfile(id))
-            dispatch(AuthActionCreators.setUserData(id, email, login, true))
+        try {
+            const response = await AuthService.authLogin()
+            if (response.resultCode === ResultCodeEnum.Success) {
+                const {id, email, login} = response.data
+                dispatch(ProfileThunkCreators.getMyProfile(id))
+                dispatch(AuthActionCreators.setUserData(id, email, login, true))
+            }
+        } catch (error) {
+            console.log(error)
         }
     },
-    login: (email: string, password: string, rememberMe: boolean, captcha: string): AppRootThunk =>
+    login: (email: string, password: string, rememberMe: boolean, captcha?: string): AppRootThunk =>
         async dispatch => {
-            let response = await AuthService.login(email, password, rememberMe, captcha)
-            if (response.resultCode === ResultCodeEnum.Success) {
-                dispatch(AuthAsyncActionCreators.loginization())
-            } else {
-                if (response.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
-                    dispatch(AuthAsyncActionCreators.getCaptchaUrl())
+            try {
+                const response = await AuthService.login(email, password, rememberMe, captcha)
+                if (response.resultCode === ResultCodeEnum.Success) {
+                    dispatch(AuthThunkCreators.loginization())
+                    // @ts-ignore
+                    dispatch(AuthActionCreators.getCaptchaUrlSuccess(null))
+                } else {
+                    if (response.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
+                        dispatch(AuthThunkCreators.getCaptchaUrl())
+                    }
                 }
-                let message = response.messages.length > 0 ? response.messages : 'Some Error'
-                // dispatch(stopSubmit('login', {_error: message}))
+            } catch (error) {
+                console.log(error)
             }
+
         },
     logout: (): AppRootThunk => async dispatch => {
-        let response = await AuthService.logout()
-        if (response.resultCode === ResultCodeEnum.Success) {
-            dispatch(AuthActionCreators.setUserData(null, null, null, false))
+        try {
+            const response = await AuthService.logout()
+            if (response.resultCode === ResultCodeEnum.Success) {
+                dispatch(AuthActionCreators.setUserData(null, null, null, false))
+            }
+        } catch (error) {
+            console.log(error)
         }
     },
     getCaptchaUrl: (): AppRootThunk => async dispatch => {
-        let response = await securityApi.getCaptchaUrl()
-        let captchaUrl = response.url
-        // dispatch(AuthActionCreators.getCaptchaUrlSuccess(captchaUrl))
+        try {
+            const response = await securityApi.getCaptchaUrl()
+            const captchaUrl = response.url
+            // @ts-ignore
+            dispatch(AuthActionCreators.getCaptchaUrlSuccess(captchaUrl))
+        } catch (error) {
+            console.log(error)
+        }
     }
 }

@@ -12,7 +12,8 @@ export default function authReducer(state = initialState, action: AuthActions): 
     switch (action.type) {
         case AuthActionEnum.GET_CAPTCHA_URL_SUCCESS:
             return {
-                ...state
+                ...state,
+                captchaUrl: action.payload.captchaUrl
             }
 
         case AuthActionEnum.SET_USER_DATA:

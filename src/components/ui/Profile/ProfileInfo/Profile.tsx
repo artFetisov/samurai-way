@@ -14,16 +14,6 @@ interface IProfileProps {
 }
 
 export const Profile: FC<IProfileProps> = React.memo(({userProfile, isOwner}) => {
-    // const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
-    //     if (e.target.files?.length)
-    //         savePhoto(e.target.files[0]);
-    // }
-    //
-    // const onSubmitData = (dataForm: IProfile) => {
-    //     saveProfile(dataForm).then(() => {
-    //         setEditMode(false)
-    //     })
-    // }
 
     return <div className={styles.profile}>
         <div className={styles.leftSide}>

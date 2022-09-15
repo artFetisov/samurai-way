@@ -1,7 +1,6 @@
 import {AppRootThunk} from "../../index";
-import {AppActions, AppEnumAction} from "./types";
-import {AuthAsyncActionCreators} from "../auth/action-creators";
-import {ProfileThunkCreators} from "../profile/action-creators";
+import {AppEnumAction} from "./types";
+import {AuthThunkCreators} from "../auth/action-creators";
 
 export const AppActionCreators = {
     initializedSuccess: () => ({type: AppEnumAction.INITIALIZED_SUCCESS}),
@@ -9,7 +8,7 @@ export const AppActionCreators = {
 
 export const AppAsyncActionCreators = {
     initializeApp: (): AppRootThunk => async dispatch => {
-        const response = dispatch(AuthAsyncActionCreators.loginization())
+        const response = dispatch(AuthThunkCreators.loginization())
         Promise.all([response]).then(() => {
             dispatch(AppActionCreators.initializedSuccess())
         })

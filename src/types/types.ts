@@ -53,3 +53,10 @@ export interface IMessage {
     id: number
     message: string
 }
+
+export interface ILoginInput {
+    email: string
+    password: string
+    rememberMe: boolean
+    captchaUrl?: string
+}

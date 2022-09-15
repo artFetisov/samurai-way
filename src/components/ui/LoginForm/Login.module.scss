@@ -1,0 +1,33 @@
+.wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 350px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px 20px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+//.input {
+//  margin: 20px 0;
+//}
+//
+//.checkBoxWrap {
+//  display: flex;
+//  margin: 15px 0;
+//
+//  .text {
+//    margin-left: 10px;
+//    color: rgba(0, 0, 0, 0.5)
+//  }
+//}
