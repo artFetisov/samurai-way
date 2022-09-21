@@ -60,3 +60,5 @@ export interface ILoginInput {
     rememberMe: boolean
     captchaUrl?: string
 }
+
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'

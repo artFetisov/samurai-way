@@ -1,10 +1,7 @@
 import {FC} from "react";
-import {useAuthRedirect} from "../../../hooks/useAuthRedirect";
+import {MyAlert} from "../../ui/alert/MyAlert";
 
 export const DialogsPage: FC = () => {
-    // useAuthRedirect()
-
     return <div>
-        dialogs page
     </div>
 }

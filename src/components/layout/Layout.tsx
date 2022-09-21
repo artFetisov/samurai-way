@@ -4,13 +4,11 @@ import styles from './Layout.module.scss';
 import {NavLink} from "react-router-dom";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 import {Header} from "./Header/Header";
-import {useAuthRedirect} from "../../hooks/useAuthRedirect";
+import {MyAlert} from "../ui/alert/MyAlert";
 
 const {Content} = Layout;
 
 export const MyLayout: FC<{ children?: ReactNode, isAuth: boolean }> = ({children, isAuth}) => {
-    useAuthRedirect()
-
     const {id} = useTypedSelector(state => state.auth)
 
     return <Layout>
@@ -33,7 +31,6 @@ export const MyLayout: FC<{ children?: ReactNode, isAuth: boolean }> = ({childre
                         {children}
                     </Content>
                 }
-
             </div>
         </div>
     </Layout>
