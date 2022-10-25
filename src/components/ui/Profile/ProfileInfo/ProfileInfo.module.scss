@@ -6,6 +6,12 @@
 
 .leftSide {
   width: 30%;
+  padding-right: 33px;
+  //max-width: 100px;
+  //display: flex;
+  //justify-content: space-between;
+  //flex-direction: column;
+  //flex-wrap: wrap;
 }
 
 .rightSide {
@@ -43,6 +49,7 @@
 .image {
   border-radius: 3px;
   max-width: 200px;
+  margin-bottom: 10px;
 }
 
 .avatar {

@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {ILoginInput} from "../../../types/types";
-import {Button, Checkbox, Form, message, Input, Image} from "antd";
+import {Button, Checkbox, Form, Input, Image} from "antd";
 import styles from './Login.module.scss';
 import {LockOutlined} from '@ant-design/icons';
 import {useTypedDispatch} from "../../../hooks/useTypedDispatch";
@@ -13,6 +13,7 @@ export const LoginForm: FC = () => {
     const [form] = Form.useForm();
 
     const onFinish = (data: ILoginInput) => {
+        console.log(data)
         const {email, password, rememberMe, captchaUrl} = data
         dispatch(AuthThunkCreators.login(email, password, rememberMe, captchaUrl))
         form.resetFields()

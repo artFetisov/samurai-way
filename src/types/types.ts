@@ -4,6 +4,16 @@ export interface IPost {
     likesCount: number
 }
 
+export interface IFilter {
+    term: string
+    friend: null | boolean
+}
+
+export interface IPhotos {
+    small: string | null
+    large: string | null
+}
+
 export interface IContact {
     github: string
     vk: string
@@ -13,16 +23,6 @@ export interface IContact {
     website: string
     youtube: string
     mainLink: string
-}
-
-export interface IFilter {
-    term: string
-    friend: null | boolean
-}
-
-export interface IPhotos {
-    small: string | null
-    large: string | null
 }
 
 export interface IProfile {

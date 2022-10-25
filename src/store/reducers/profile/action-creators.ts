@@ -29,42 +29,66 @@ export const ProfileActionCreators = {
 
 export const ProfileThunkCreators = {
     getUserProfile: (userId: number | null): AppRootThunk => async dispatch => {
-        dispatch(ProfileActionCreators.setIsLoading(false))
-        const response = await ProfileService.getUserProfile(userId)
-        await dispatch(ProfileThunkCreators.getUserStatus(userId as number))
-        dispatch(ProfileActionCreators.setUserProfile(response))
-        dispatch(ProfileActionCreators.setIsLoading(true))
+        try {
+            dispatch(ProfileActionCreators.setIsLoading(false))
+            const response = await ProfileService.getUserProfile(userId)
+            await dispatch(ProfileThunkCreators.getUserStatus(userId as number))
+            dispatch(ProfileActionCreators.setUserProfile(response))
+            dispatch(ProfileActionCreators.setIsLoading(true))
+        } catch (error) {
+            console.log(error)
+        }
+
     },
     getMyProfile: (userId: number | null): AppRootThunk => async dispatch => {
-        const response = await ProfileService.getUserProfile(userId)
-        dispatch(ProfileActionCreators.setMyProfile(response))
+        try {
+            const response = await ProfileService.getUserProfile(userId)
+            dispatch(ProfileActionCreators.setMyProfile(response))
+        } catch (error) {
+            console.log(error)
+        }
     }
     ,
     getUserStatus: (userId: number): AppRootThunk => async dispatch => {
-        let response = await ProfileService.getStatus(userId)
-        dispatch(ProfileActionCreators.setStatus(response))
+        try {
+            const response = await ProfileService.getStatus(userId)
+            dispatch(ProfileActionCreators.setStatus(response))
+        } catch (error) {
+            console.log(error)
+        }
     },
     updateUserStatus: (status: string): AppRootThunk => async dispatch => {
-        let response = await ProfileService.updateStatus(status)
-        if (response.resultCode === 0) {
-            dispatch(ProfileActionCreators.setStatus(status))
+        try {
+            const response = await ProfileService.updateStatus(status)
+            if (response.resultCode === 0) {
+                dispatch(ProfileActionCreators.setStatus(status))
+            }
+        } catch (error) {
+            console.log(error)
         }
     },
     savePhoto: (file: File): AppRootThunk => async dispatch => {
-        let response = await ProfileService.savePhoto(file)
-        if (response.resultCode === 0) {
-            dispatch(ProfileActionCreators.savePhotoSuccess(response.data.photos))
+        try {
+            const response = await ProfileService.savePhoto(file)
+            if (response.resultCode === 0) {
+                dispatch(ProfileActionCreators.savePhotoSuccess(response.data.photos))
+            }
+        } catch (error) {
+            console.log(error)
         }
     },
     saveProfile: (profile: IProfile): AppRootThunk =>
         async (dispatch, getState: () => AppStateType) => {
-            const userId = getState().auth.id
-            const response = await ProfileService.saveProfile(profile)
-            if (response.resultCode === 0) {
-                dispatch(ProfileThunkCreators.getUserProfile(userId))
-            } else {
-                // dispatch(stopSubmit('profile', {_error: response.messages[0]}))
-                return Promise.reject(response.messages[0])
+            try {
+                const userId = getState().auth.id
+                const response = await ProfileService.saveProfile(profile)
+                if (response.resultCode === 0) {
+                    dispatch(ProfileThunkCreators.getUserProfile(userId))
+                } else {
+                    return Promise.reject(response.messages[0])
+                }
+            } catch (error) {
+                console.log(error)
             }
         }
 }

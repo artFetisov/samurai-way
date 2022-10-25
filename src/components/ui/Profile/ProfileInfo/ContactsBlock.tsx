@@ -17,7 +17,7 @@ export const ContactsBlock: FC<IContactsBlockProps> = ({userProfile}) => {
 
     return <div className={styles.contacts}>
         <h3>Контактная информация:</h3>
-        {contactsArr.map(c => <Contact field={c.field} value={c.value}/>)}
+        {contactsArr.map(c => <Contact key={c.value + '-' + c.field} field={c.field} value={c.value}/>)}
         <div className={styles.border}/>
     </div>
 }

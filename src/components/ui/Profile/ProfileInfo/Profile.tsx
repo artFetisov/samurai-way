@@ -1,12 +1,16 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import styles from './ProfileInfo.module.scss';
 import {ProfileStatus} from './ProfileStatus';
 import {IProfile} from "../../../../types/types";
-import {Image} from "antd";
+import {Button, Image} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import {InfoBlock} from "./InfoBlock";
 import {ContactsBlock} from "./ContactsBlock";
-import {Friends} from "../../users/Friends";
+import {UploadButton} from "../../UploadButton/UploadButton";
+import {useTypedDispatch} from "../../../../hooks/useTypedDispatch";
+import {ProfileThunkCreators} from "../../../../store/reducers/profile/action-creators";
+import {ProfileData} from "./ProfileData";
+import {ProfileDataForm} from "./ProfileDataForm";
 
 interface IProfileProps {
     userProfile: IProfile | null
@@ -14,12 +18,23 @@ interface IProfileProps {
 }
 
 export const Profile: FC<IProfileProps> = React.memo(({userProfile, isOwner}) => {
+    const [editMode, setEditMode] = useState(false)
+    const dispatch = useTypedDispatch()
+
+    const editModeHandler = (value: boolean) => {
+        setEditMode(value)
+    }
+
+    const updatePhotoHandler = (image: File) => {
+        dispatch(ProfileThunkCreators.savePhoto(image))
+    }
 
     return <div className={styles.profile}>
         <div className={styles.leftSide}>
             {userProfile?.photos?.small
             && userProfile.photos.large
-                ? <Image width={200}
+                ? <Image style={{display: 'block'}}
+                         width={200}
                          className={styles.image}
                          src={userProfile.photos.large
                              ? userProfile.photos.large
@@ -28,17 +43,17 @@ export const Profile: FC<IProfileProps> = React.memo(({userProfile, isOwner}) =>
                          preview={false}/>
                 : <span className={styles.avatar}><UserOutlined/></span>
             }
-            <Friends/>
+            {isOwner && <UploadButton onChange={updatePhotoHandler}></UploadButton>}
         </div>
         <div className={styles.rightSide}>
             <div className={styles.nameWrap}>
                 <div className={styles.name}>{userProfile?.fullName}</div>
                 <ProfileStatus isOwner={isOwner}/>
             </div>
-            <div className={styles.infoBlock}>
-                <ContactsBlock userProfile={userProfile}/>
-                <InfoBlock userProfile={userProfile}/>
-            </div>
+            {!editMode
+                ? <ProfileData userProfile={userProfile} isOwner={isOwner} editModeHandler={editModeHandler}/>
+                : <ProfileDataForm userProfile={userProfile} isOwner={isOwner} editModeHandler={editModeHandler}/>
+            }
         </div>
     </div>
 })

@@ -10,7 +10,7 @@ import {Col, Row} from 'antd';
 import {MyLoader} from "../../ui/loader/SkeletonLoader";
 import {useTypedDispatch} from "../../../hooks/useTypedDispatch";
 
-export const UsersPage: FC = () => {
+const UsersPage: FC = () => {
     // useAuthRedirect()
     const dispatch = useTypedDispatch()
     const {
@@ -31,3 +31,5 @@ export const UsersPage: FC = () => {
         </Col>
     </Row>
 }
+
+export default UsersPage;

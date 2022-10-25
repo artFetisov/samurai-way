@@ -41,17 +41,17 @@ export const ProfileStatus: FC<IProfileStatusProps> = ({isOwner}) => {
         <>
             {editMode &&
                 <div className={styles.statusWrap}>
-                    <Input onChange={onChangeStatus} autoFocus={true}
+                    <Input onChange={onChangeStatus} size={'large'} autoFocus={true}
                            onBlur={changeStatus} value={newStatus}
                            onKeyDown={onKeyPressHandler} placeholder="small size"
                            prefix={<UserOutlined/>}/>
-                    <Button style={{marginLeft: '10px'}} type={'primary'}>Сохранить</Button>
+                    <Button style={{marginLeft: '10px'}} size={'large'} type={'primary'}>Сохранить</Button>
                 </div>}
 
             {!editMode && <div>
                 {status && isOwner && <div className={styles.statusWrap}>
                     <div className={styles.status} onDoubleClick={setEditModeHandler}>{status || ''}</div>
-                    <Button type={'primary'} onClick={setEditModeHandler}>Поменять
+                    <Button size={'large'} type={'primary'} onClick={setEditModeHandler}>Поменять
                         статус
                     </Button>
                 </div>}
